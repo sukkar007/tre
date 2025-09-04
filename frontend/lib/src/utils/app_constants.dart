@@ -152,5 +152,147 @@ class AppConstants {
   static const Duration sessionTimeout = Duration(hours: 24);
   static const int maxLoginAttempts = 5;
   static const Duration loginCooldown = Duration(minutes: 15);
+  
+  // ألوان المايكات والأدوار
+  static const int primaryColorValue = 0xFF6366f1;
+  static const int emptySeatColorValue = 0xFFE0E0E0;
+  static const int occupiedSeatColorValue = 0xFF6366f1;
+  static const int currentUserSeatColorValue = 0xFF10b981;
+  static const int mutedSeatColorValue = 0xFFef4444;
+  static const int vipSeatColorValue = 0xFFf59e0b;
+  static const int speakingIndicatorColorValue = 0xFF00E676;
+  
+  // ألوان الأدوار
+  static const int ownerColorValue = 0xFF9C27B0;
+  static const int adminColorValue = 0xFFf59e0b;
+  static const int speakerColorValue = 0xFF06b6d4;
+  static const int listenerColorValue = 0xFF6b7280;
+  
+  // ألوان الحالة
+  static const int onlineColorValue = 0xFF10b981;
+  static const int awayColorValue = 0xFFf59e0b;
+  static const int offlineColorValue = 0xFF6b7280;
+  
+  // إعدادات المايكات
+  static const List<int> availableMicCounts = [2, 6, 12, 16, 20];
+  static const int defaultMicCount = 6;
+  static const int maxVipSeats = 4;
+  
+  // أدوار المستخدمين
+  static const String roleOwner = 'owner';
+  static const String roleAdmin = 'admin';
+  static const String roleSpeaker = 'speaker';
+  static const String roleListener = 'listener';
+  
+  // حالات المستخدم
+  static const String statusOnline = 'online';
+  static const String statusAway = 'away';
+  static const String statusOffline = 'offline';
+  
+  // حالات الغرفة
+  static const String roomStatusActive = 'active';
+  static const String roomStatusPaused = 'paused';
+  static const String roomStatusClosed = 'closed';
+  
+  // أنواع الرسائل
+  static const String messageTypeText = 'text';
+  static const String messageTypeImage = 'image';
+  static const String messageTypeAudio = 'audio';
+  static const String messageTypeEmoji = 'emoji';
+  static const String messageTypeSystem = 'system';
+  static const String messageTypeUserJoined = 'user_joined';
+  static const String messageTypeUserLeft = 'user_left';
+  static const String messageTypeMicChange = 'mic_change';
+  static const String messageTypeAdminAction = 'admin_action';
+  
+  // فئات الغرف
+  static const List<String> roomCategories = [
+    'عام',
+    'موسيقى',
+    'تعليم',
+    'ألعاب',
+    'تقنية',
+    'رياضة',
+    'ثقافة',
+    'ترفيه',
+  ];
+  
+  // Helper methods للألوان والأدوار
+  static Color getRoleColor(String role) {
+    switch (role) {
+      case roleOwner:
+        return Color(ownerColorValue);
+      case roleAdmin:
+        return Color(adminColorValue);
+      case roleSpeaker:
+        return Color(speakerColorValue);
+      default:
+        return Color(listenerColorValue);
+    }
+  }
+  
+  static Color getStatusColor(String status) {
+    switch (status) {
+      case statusOnline:
+        return Color(onlineColorValue);
+      case statusAway:
+        return Color(awayColorValue);
+      default:
+        return Color(offlineColorValue);
+    }
+  }
+  
+  static IconData getRoleIcon(String role) {
+    switch (role) {
+      case roleOwner:
+        return Icons.crown;
+      case roleAdmin:
+        return Icons.admin_panel_settings;
+      case roleSpeaker:
+        return Icons.mic;
+      default:
+        return Icons.person;
+    }
+  }
+  
+  static String getRoleDisplayName(String role) {
+    switch (role) {
+      case roleOwner:
+        return 'مالك الغرفة';
+      case roleAdmin:
+        return 'مدير';
+      case roleSpeaker:
+        return 'متحدث';
+      default:
+        return 'مستمع';
+    }
+  }
+  
+  static bool canPerformAction(String userRole, String action) {
+    switch (action) {
+      case 'change_mic_count':
+      case 'kick_user':
+      case 'ban_user':
+      case 'assign_admin':
+      case 'remove_admin':
+      case 'delete_room':
+        return userRole == roleOwner;
+        
+      case 'mute_user':
+      case 'unmute_user':
+      case 'remove_from_mic':
+      case 'clear_chat':
+      case 'update_room_settings':
+        return userRole == roleOwner || userRole == roleAdmin;
+        
+      case 'send_message':
+      case 'request_mic':
+      case 'leave_mic':
+        return true; // جميع المستخدمين
+        
+      default:
+        return false;
+    }
+  }
 }
 
