@@ -15,9 +15,12 @@ try {
   console.log('Please add your serviceAccountKey.json file to the backend directory');
 }
 
-// استيراد وتسجيل مسار المصادقة
+// استيراد وتسجيل مسارات API
 const authRoutes = require('./routes/auth.js');
+const splashRoutes = require('./routes/splash.js');
+
 fastify.register(authRoutes, { prefix: '/api/auth' });
+fastify.register(splashRoutes, { prefix: '/api/splash' });
 
 // نقطة وصول تجريبية للتأكد من عمل الخادم
 fastify.get('/', async (request, reply) => {
