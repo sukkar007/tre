@@ -33,6 +33,14 @@ dependencies:
   # URL Launcher for ads
   url_launcher: ^6.2.2
   
+  # ZegoCloud SDK for audio rooms
+  zego_uikit_prebuilt_live_audio_room: ^2.22.1
+  zego_uikit: ^2.22.1
+  zego_express_engine: ^3.14.5
+  
+  # Socket.io for real-time communication
+  socket_io_client: ^2.0.3+1
+  
   # UI Components
   cupertino_icons: ^1.0.2
 
