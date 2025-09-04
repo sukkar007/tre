@@ -1,20 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:provider/provider.dart';
 
-import 'firebase_options.dart';
-import 'src/services/auth_service.dart';
+import 'src/models/user_model.dart';
+import 'src/services/mock_auth_service.dart';
+import 'src/services/mock_room_service.dart';
+import 'src/services/mock_media_service.dart';
 import 'src/screens/splash_screen.dart';
+import 'src/screens/login_screen.dart';
+import 'src/screens/home_screen.dart';
+import 'src/utils/app_constants.dart';
 
 void main() async {
   // التأكد من تهيئة Flutter
   WidgetsFlutterBinding.ensureInitialized();
-  
-  // تهيئة Firebase
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
   
   // تعيين اتجاه الشاشة (عمودي فقط)
   await SystemChrome.setPreferredOrientations([
@@ -32,22 +31,30 @@ void main() async {
     ),
   );
 
-  runApp(const HUSApp());
+  // تشغيل النسخة التجريبية مع بيانات وهمية
+  runApp(const HUSAppDemo());
 }
 
-class HUSApp extends StatelessWidget {
-  const HUSApp({super.key});
+class HUSAppDemo extends StatelessWidget {
+  const HUSAppDemo({super.key});
 
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(
-          create: (context) => AuthService(),
+        // خدمات تجريبية بدلاً من Firebase
+        Provider<MockAuthService>(create: (_) => MockAuthService()),
+        Provider<MockRoomService>(create: (_) => MockRoomService()),
+        Provider<MockMediaService>(create: (_) => MockMediaService()),
+        
+        // حالة المصادقة
+        StreamProvider<UserModel?>(
+          create: (context) => context.read<MockAuthService>().authStateChanges,
+          initialData: null,
         ),
       ],
       child: MaterialApp(
-        title: 'HUS - تطبيق الدردشة الصوتية',
+        title: 'HUS - نسخة تجريبية',
         debugShowCheckedModeBanner: false,
         
         // إعدادات التطبيق
@@ -240,7 +247,7 @@ class HUSApp extends StatelessWidget {
         ),
         
         // الشاشة الأولى
-        home: const SplashScreen(),
+        home: const AppWrapper(),
         
         // إعدادات التنقل
         navigatorKey: GlobalKey<NavigatorState>(),
@@ -297,6 +304,246 @@ class HUSApp extends StatelessWidget {
           
           return child ?? const SizedBox.shrink();
         },
+      ),
+    );
+  }
+}
+
+class AppWrapper extends StatefulWidget {
+  const AppWrapper({super.key});
+
+  @override
+  State<AppWrapper> createState() => _AppWrapperState();
+}
+
+class _AppWrapperState extends State<AppWrapper> {
+  bool _isInitialized = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _initializeApp();
+  }
+
+  Future<void> _initializeApp() async {
+    try {
+      // تهيئة الخدمات التجريبية
+      final authService = context.read<MockAuthService>();
+      final roomService = context.read<MockRoomService>();
+      final mediaService = context.read<MockMediaService>();
+      
+      // تهيئة البيانات التجريبية
+      roomService.initializeDemoData();
+      mediaService.initializeDemoData();
+      
+      // محاولة استعادة جلسة المستخدم
+      await authService.restoreSession();
+      
+      // محاكاة تأخير التحميل
+      await Future.delayed(const Duration(seconds: 2));
+      
+      setState(() {
+        _isInitialized = true;
+      });
+    } catch (e) {
+      print('خطأ في تهيئة التطبيق: $e');
+      setState(() {
+        _isInitialized = true;
+      });
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    if (!_isInitialized) {
+      return const SplashScreen();
+    }
+
+    return Consumer<UserModel?>(
+      builder: (context, user, child) {
+        if (user == null) {
+          return const DemoLoginScreen();
+        } else {
+          return const HomeScreen();
+        }
+      },
+    );
+  }
+}
+
+/// شاشة تسجيل دخول تجريبية
+class DemoLoginScreen extends StatelessWidget {
+  const DemoLoginScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final authService = context.read<MockAuthService>();
+
+    return Scaffold(
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [
+              Colors.purple.shade900,
+              Colors.blue.shade900,
+            ],
+          ),
+        ),
+        child: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.all(24.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                // شعار التطبيق
+                Container(
+                  width: 120,
+                  height: 120,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(30),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.2),
+                        blurRadius: 20,
+                        offset: const Offset(0, 10),
+                      ),
+                    ],
+                  ),
+                  child: const Icon(
+                    Icons.mic,
+                    size: 60,
+                    color: Color(0xFF6366f1),
+                  ),
+                ),
+                
+                const SizedBox(height: 32),
+                
+                // عنوان التطبيق
+                const Text(
+                  'HUS',
+                  style: TextStyle(
+                    fontSize: 48,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                    fontFamily: 'Cairo',
+                  ),
+                ),
+                
+                const SizedBox(height: 8),
+                
+                const Text(
+                  'نسخة تجريبية',
+                  style: TextStyle(
+                    fontSize: 18,
+                    color: Colors.white70,
+                    fontFamily: 'Cairo',
+                  ),
+                ),
+                
+                const SizedBox(height: 48),
+                
+                // معلومات النسخة التجريبية
+                Container(
+                  padding: const EdgeInsets.all(20),
+                  decoration: BoxDecoration(
+                    color: Colors.white.withOpacity(0.1),
+                    borderRadius: BorderRadius.circular(16),
+                    border: Border.all(
+                      color: Colors.white.withOpacity(0.2),
+                    ),
+                  ),
+                  child: Column(
+                    children: [
+                      const Icon(
+                        Icons.info_outline,
+                        color: Colors.white,
+                        size: 32,
+                      ),
+                      const SizedBox(height: 12),
+                      const Text(
+                        'هذه نسخة تجريبية تعمل ببيانات وهمية',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 16,
+                          fontFamily: 'Cairo',
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                      const SizedBox(height: 8),
+                      Text(
+                        'لا تحتاج لإعدادات Firebase أو ZegoCloud',
+                        style: TextStyle(
+                          color: Colors.white.withOpacity(0.8),
+                          fontSize: 14,
+                          fontFamily: 'Cairo',
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                    ],
+                  ),
+                ),
+                
+                const SizedBox(height: 48),
+                
+                // أزرار تسجيل الدخول التجريبي
+                SizedBox(
+                  width: double.infinity,
+                  child: ElevatedButton.icon(
+                    onPressed: () async {
+                      await authService.signInDemo();
+                    },
+                    icon: const Icon(Icons.person),
+                    label: const Text(
+                      'دخول تجريبي',
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontFamily: 'Cairo',
+                      ),
+                    ),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.white,
+                      foregroundColor: const Color(0xFF6366f1),
+                      padding: const EdgeInsets.symmetric(vertical: 16),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                    ),
+                  ),
+                ),
+                
+                const SizedBox(height: 16),
+                
+                SizedBox(
+                  width: double.infinity,
+                  child: OutlinedButton.icon(
+                    onPressed: () async {
+                      await authService.signInWithGoogle();
+                    },
+                    icon: const Icon(Icons.login),
+                    label: const Text(
+                      'تسجيل دخول Google (تجريبي)',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontFamily: 'Cairo',
+                      ),
+                    ),
+                    style: OutlinedButton.styleFrom(
+                      foregroundColor: Colors.white,
+                      side: const BorderSide(color: Colors.white),
+                      padding: const EdgeInsets.symmetric(vertical: 16),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
       ),
     );
   }
