@@ -15,12 +15,45 @@ try {
   console.log('Please add your serviceAccountKey.json file to the backend directory');
 }
 
+// تسجيل CORS
+fastify.register(require('@fastify/cors'), {
+  origin: true, // السماح لجميع المصادر
+  credentials: true
+});
+
+// تسجيل خدمة الملفات الثابتة
+fastify.register(require('@fastify/static'), {
+  root: require('path').join(__dirname, 'uploads'),
+  prefix: '/uploads/'
+});
+
+// middleware للمصادقة
+fastify.decorate('authenticate', async function (request, reply) {
+  try {
+    const token = request.headers.authorization?.replace('Bearer ', '');
+    if (!token) {
+      throw new Error('Token مطلوب');
+    }
+
+    const decodedToken = await admin.auth().verifyIdToken(token);
+    request.user = decodedToken;
+  } catch (error) {
+    reply.status(401).send({ error: 'غير مصرح', message: error.message });
+  }
+});
+
 // استيراد وتسجيل مسارات API
 const authRoutes = require('./routes/auth.js');
 const splashRoutes = require('./routes/splash.js');
+const profanityRoutes = require('./routes/profanity.js');
+const mediaRoutes = require('./routes/media.js');
+const uploadRoutes = require('./routes/upload.js');
 
 fastify.register(authRoutes, { prefix: '/api/auth' });
 fastify.register(splashRoutes, { prefix: '/api/splash' });
+fastify.register(profanityRoutes, { prefix: '/api/profanity' });
+fastify.register(mediaRoutes, { prefix: '/api/media' });
+fastify.register(uploadRoutes, { prefix: '/api/upload' });
 
 // نقطة وصول تجريبية للتأكد من عمل الخادم
 fastify.get('/', async (request, reply) => {
