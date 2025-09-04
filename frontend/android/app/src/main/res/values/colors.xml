@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Primary brand colors -->
+    <color name="colorPrimary">#6366F1</color>
+    <color name="colorPrimaryDark">#4F46E5</color>
+    <color name="colorAccent">#EC4899</color>
+    <color name="colorSecondary">#8B5CF6</color>
+    
+    <!-- Background colors -->
+    <color name="backgroundColor">#F8FAFC</color>
+    <color name="surfaceColor">#FFFFFF</color>
+    <color name="cardColor">#FFFFFF</color>
+    <color name="dialogColor">#FFFFFF</color>
+    
+    <!-- Text colors -->
+    <color name="textPrimary">#1F2937</color>
+    <color name="textSecondary">#6B7280</color>
+    <color name="textHint">#9CA3AF</color>
+    <color name="textOnPrimary">#FFFFFF</color>
+    <color name="textOnSecondary">#FFFFFF</color>
+    
+    <!-- Status colors -->
+    <color name="successColor">#10B981</color>
+    <color name="warningColor">#F59E0B</color>
+    <color name="errorColor">#EF4444</color>
+    <color name="infoColor">#3B82F6</color>
+    
+    <!-- Audio room colors -->
+    <color name="roomOwnerColor">#FBBF24</color>
+    <color name="roomAdminColor">#8B5CF6</color>
+    <color name="roomUserColor">#6B7280</color>
+    <color name="roomSpeakingColor">#10B981</color>
+    <color name="roomMutedColor">#EF4444</color>
+    
+    <!-- Gradient colors -->
+    <color name="gradientStart">#667EEA</color>
+    <color name="gradientMiddle">#764BA2</color>
+    <color name="gradientEnd">#F093FB</color>
+    
+    <!-- Audio visualizer colors -->
+    <color name="visualizerPrimary">#6366F1</color>
+    <color name="visualizerSecondary">#EC4899</color>
+    <color name="visualizerAccent">#8B5CF6</color>
+    
+    <!-- Transparent colors -->
+    <color name="transparentBlack">#80000000</color>
+    <color name="transparentWhite">#80FFFFFF</color>
+    <color name="transparentPrimary">#806366F1</color>
+    <color name="transparentAccent">#80EC4899</color>
+    
+    <!-- Dark theme colors -->
+    <color name="darkBackground">#111827</color>
+    <color name="darkSurface">#1F2937</color>
+    <color name="darkCard">#374151</color>
+    <color name="darkTextPrimary">#F9FAFB</color>
+    <color name="darkTextSecondary">#D1D5DB</color>
+    
+    <!-- Border colors -->
+    <color name="borderLight">#E5E7EB</color>
+    <color name="borderMedium">#D1D5DB</color>
+    <color name="borderDark">#9CA3AF</color>
+    
+    <!-- Notification colors -->
+    <color name="notificationBackground">#1F2937</color>
+    <color name="notificationText">#FFFFFF</color>
+    
+    <!-- Media player colors -->
+    <color name="mediaPlayerBackground">#1F2937</color>
+    <color name="mediaPlayerProgress">#6366F1</color>
+    <color name="mediaPlayerBuffer">#9CA3AF</color>
+    
+    <!-- Chat colors -->
+    <color name="chatBubbleOwn">#6366F1</color>
+    <color name="chatBubbleOther">#F3F4F6</color>
+    <color name="chatTextOwn">#FFFFFF</color>
+    <color name="chatTextOther">#1F2937</color>
+    
+    <!-- Button colors -->
+    <color name="buttonPrimary">#6366F1</color>
+    <color name="buttonSecondary">#E5E7EB</color>
+    <color name="buttonDanger">#EF4444</color>
+    <color name="buttonSuccess">#10B981</color>
+    <color name="buttonWarning">#F59E0B</color>
+    
+    <!-- Ripple effect colors -->
+    <color name="ripplePrimary">#806366F1</color>
+    <color name="rippleSecondary">#80E5E7EB</color>
+    <color name="rippleDanger">#80EF4444</color>
+</resources>
+

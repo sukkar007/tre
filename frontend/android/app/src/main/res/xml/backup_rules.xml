@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<full-backup-content>
+    <!-- Include user preferences -->
+    <include domain="sharedpref" path="." />
+    
+    <!-- Include database files -->
+    <include domain="database" path="." />
+    
+    <!-- Include internal files -->
+    <include domain="file" path="." />
+    
+    <!-- Exclude sensitive files -->
+    <exclude domain="sharedpref" path="auth_tokens.xml" />
+    <exclude domain="sharedpref" path="secure_prefs.xml" />
+    <exclude domain="database" path="secure.db" />
+    
+    <!-- Exclude cache files -->
+    <exclude domain="file" path="cache/" />
+    <exclude domain="file" path="temp/" />
+    
+    <!-- Exclude large media files -->
+    <exclude domain="file" path="media/large/" />
+</full-backup-content>
+
