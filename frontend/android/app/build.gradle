@@ -29,8 +29,8 @@ android {
     ndkVersion flutter.ndkVersion
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_21
-        targetCompatibility JavaVersion.VERSION_1_21
+        sourceCompatibility JavaVersion.VERSION_21
+        targetCompatibility JavaVersion.VERSION_21
     }
 
     kotlinOptions {
@@ -43,7 +43,7 @@ android {
 
     defaultConfig {
         applicationId "com.flamingolive.hus"
-        minSdkVersion flutter.minSdkVersion
+        minSdkVersion 21
         targetSdkVersion 35
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
@@ -52,6 +52,11 @@ android {
 
     buildTypes {
         release {
+            signingConfig signingConfigs.debug
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+        debug {
             signingConfig signingConfigs.debug
         }
     }
