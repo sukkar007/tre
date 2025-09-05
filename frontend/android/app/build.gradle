@@ -107,9 +107,9 @@ dependencies {
     implementation 'com.google.android.gms:play-services-auth:20.7.0'
     implementation 'com.google.android.gms:play-services-location:21.0.1'
     
-    // ZegoCloud SDK
-    implementation 'com.github.zegolibrary:express-audio-room-android:+'
-    implementation 'im.zego:express-audio:+'
+    // ZegoCloud SDK - معطلة مؤقتاً لحل مشاكل البناء
+    // implementation 'com.github.zegolibrary:express-audio-room-android:+'
+    // implementation 'im.zego:express-audio:+'
     
     // Audio & Media
     implementation 'androidx.media:media:1.7.0'
@@ -138,8 +138,8 @@ dependencies {
     // Multidex
     implementation 'androidx.multidex:multidex:2.0.1'
     
-    // WebRTC (for advanced audio features)
-    implementation 'org.webrtc:google-webrtc:1.0.32006'
+    // WebRTC (for advanced audio features) - معطلة مؤقتاً لحل مشاكل البناء
+    // implementation 'org.webrtc:google-webrtc:1.0.32006'
     
     // Socket.IO for real-time communication
     implementation 'io.socket:socket.io-client:2.1.0'

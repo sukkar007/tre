@@ -1,5 +1,5 @@
 buildscript {
-    ext.kotlin_version = '1.9.10'
+    ext.kotlin_version = '1.9.22'
     repositories {
         google()
         mavenCentral()
@@ -17,8 +17,8 @@ allprojects {
     repositories {
         google()
         mavenCentral()
-        maven { url 'https://storage.zego.im/maven' }   // ZegoCloud repository
-        maven { url 'https://www.jitpack.io' }
+        // maven { url 'https://storage.zego.im/maven' }   // ZegoCloud repository - معطلة مؤقتاً
+        // maven { url 'https://www.jitpack.io' }
     }
 }
 
