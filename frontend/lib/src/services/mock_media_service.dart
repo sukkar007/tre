@@ -2,6 +2,9 @@ import 'dart:async';
 import 'dart:math';
 import '../models/media_content_model.dart';
 
+// typedef للتوافق مع الكود الموجود
+typedef MediaContentModel = MediaContent;
+
 /// خدمة الوسائط التجريبية - محاكاة تشغيل YouTube والملفات الصوتية
 class MockMediaService {
   static final MockMediaService _instance = MockMediaService._internal();

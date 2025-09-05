@@ -247,7 +247,7 @@ class AppConstants {
   static IconData getRoleIcon(String role) {
     switch (role) {
       case roleOwner:
-        return Icons.crown;
+        return Icons.star; // استبدال crown بـ star
       case roleAdmin:
         return Icons.admin_panel_settings;
       case roleSpeaker:
