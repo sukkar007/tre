@@ -11,11 +11,11 @@ dependencies:
   flutter:
     sdk: flutter
   
-  # Firebase - مفعلة للبناء
-  firebase_core: ^3.8.0
-  firebase_auth: ^5.3.3
-  firebase_messaging: ^15.1.5
-  firebase_analytics: ^11.3.5
+  # Firebase - معطلة مؤقتاً للبناء التجريبي
+  # firebase_core: ^3.8.0
+  # firebase_auth: ^5.3.3
+  # firebase_messaging: ^15.1.5
+  # firebase_analytics: ^11.3.5
   
   # Authentication - محدثة للإصدارات الحديثة
   google_sign_in: ^6.2.2
