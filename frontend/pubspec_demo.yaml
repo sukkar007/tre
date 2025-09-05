@@ -1,0 +1,97 @@
+name: hus_app
+description: "HUS - Audio Chat Social Application (Demo Version)"
+publish_to: 'none'
+
+version: 2.0.1+1
+
+environment:
+  sdk: '>=3.2.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  
+  # Firebase - معطلة للنسخة التجريبية
+  # firebase_core: ^3.8.0
+  # firebase_auth: ^5.3.3
+  # firebase_messaging: ^15.1.5
+  # firebase_analytics: ^11.3.5
+  
+  # Authentication - محدثة للإصدارات الحديثة
+  # google_sign_in: ^6.2.2
+  
+  # Device & System Info
+  device_info_plus: ^11.1.0
+  package_info_plus: ^8.1.0
+  connectivity_plus: ^6.1.0
+  
+  # Network & API - أحدث إصدارات
+  http: ^1.2.2
+  dio: ^5.7.0
+  
+  # Storage & Security - محدثة
+  flutter_secure_storage: ^9.2.2
+  shared_preferences: ^2.3.3
+  
+  # State Management & Navigation
+  provider: ^6.1.2
+  go_router: ^14.6.2
+  
+  # Utilities
+  url_launcher: ^6.3.1
+  intl: ^0.20.1
+  permission_handler: ^11.3.1
+  path_provider: ^2.1.5
+  
+  # ZegoCloud SDK - معطل للنسخة التجريبية
+  # zego_uikit_prebuilt_live_audio_room: ^4.14.0
+  # zego_uikit: ^4.14.0
+  # zego_express_engine: ^3.15.0
+  
+  # Socket.io - معطل للنسخة التجريبية
+  # socket_io_client: ^3.0.1
+  
+  # Media & Audio - للتحكم في الصوت والفيديو
+  just_audio: ^0.9.42
+  audioplayers: ^6.1.0
+  video_player: ^2.9.2
+  youtube_player_flutter: ^9.1.1
+  
+  # UI & Design - محدثة للإصدارات الحديثة
+  cupertino_icons: ^1.0.8
+  google_fonts: ^6.2.1
+  flutter_svg: ^2.0.12
+  cached_network_image: ^3.4.1
+  lottie: ^3.2.0
+  
+  # Notifications & File Handling
+  flutter_local_notifications: ^18.0.1
+  image_picker: ^1.1.2
+  file_picker: ^8.1.4
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^4.0.0
+  build_runner: ^2.4.13
+
+flutter:
+  uses-material-design: true
+  
+  assets:
+    - assets/images/
+    - assets/icons/
+    - assets/animations/
+  
+  fonts:
+    - family: Cairo
+      fonts:
+        - asset: assets/fonts/Cairo-Regular.ttf
+        - asset: assets/fonts/Cairo-Bold.ttf
+          weight: 700
+    - family: Tajawal
+      fonts:
+        - asset: assets/fonts/Tajawal-Regular.ttf
+        - asset: assets/fonts/Tajawal-Bold.ttf
+          weight: 700
+

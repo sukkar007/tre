@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">HUS</string>
+    <string name="app_description">تطبيق الدردشة الصوتية الاجتماعية</string>
+    
+    <!-- ZegoCloud Configuration -->
+    <string name="zego_app_id">YOUR_ZEGO_APP_ID</string>
+    <string name="zego_app_sign">YOUR_ZEGO_APP_SIGN</string>
+    
+    <!-- Notification strings -->
+    <string name="notification_channel_name">إشعارات HUS</string>
+    <string name="notification_channel_description">إشعارات تطبيق HUS</string>
+    
+    <!-- Permission strings -->
+    <string name="permission_microphone_title">صلاحية الميكروفون</string>
+    <string name="permission_microphone_message">يحتاج التطبيق إلى صلاحية الميكروفون للمشاركة في الغرف الصوتية</string>
+    <string name="permission_storage_title">صلاحية التخزين</string>
+    <string name="permission_storage_message">يحتاج التطبيق إلى صلاحية التخزين لرفع وتشغيل الملفات الصوتية</string>
+    <string name="permission_camera_title">صلاحية الكاميرا</string>
+    <string name="permission_camera_message">يحتاج التطبيق إلى صلاحية الكاميرا لتحديث صورة الملف الشخصي</string>
+    
+    <!-- Audio room strings -->
+    <string name="audio_room_connecting">جاري الاتصال بالغرفة الصوتية...</string>
+    <string name="audio_room_connected">متصل بالغرفة الصوتية</string>
+    <string name="audio_room_disconnected">منقطع عن الغرفة الصوتية</string>
+    <string name="audio_room_error">خطأ في الاتصال بالغرفة الصوتية</string>
+    
+    <!-- Media strings -->
+    <string name="media_loading">جاري تحميل الوسائط...</string>
+    <string name="media_playing">قيد التشغيل</string>
+    <string name="media_paused">متوقف مؤقتاً</string>
+    <string name="media_stopped">متوقف</string>
+    <string name="media_error">خطأ في تشغيل الوسائط</string>
+    
+    <!-- Error messages -->
+    <string name="error_network">خطأ في الاتصال بالشبكة</string>
+    <string name="error_server">خطأ في الخادم</string>
+    <string name="error_unknown">خطأ غير معروف</string>
+    <string name="error_permission_denied">تم رفض الصلاحية</string>
+    
+    <!-- Success messages -->
+    <string name="success_file_uploaded">تم رفع الملف بنجاح</string>
+    <string name="success_message_sent">تم إرسال الرسالة</string>
+    <string name="success_room_joined">تم الانضمام للغرفة</string>
+    
+    <!-- Button texts -->
+    <string name="button_ok">موافق</string>
+    <string name="button_cancel">إلغاء</string>
+    <string name="button_retry">إعادة المحاولة</string>
+    <string name="button_settings">الإعدادات</string>
+    <string name="button_share">مشاركة</string>
+    <string name="button_join">انضمام</string>
+    <string name="button_leave">مغادرة</string>
+    <string name="button_mute">كتم</string>
+    <string name="button_unmute">إلغاء الكتم</string>
+    
+    <!-- File provider authority -->
+    <string name="file_provider_authority">com.flamingolive.hus.fileprovider</string>
+</resources>
+
