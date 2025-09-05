@@ -19,6 +19,10 @@ class UserModel {
 
   // getter للـ id للتوافق مع الكود الموجود
   String get id => userId;
+  
+  // getters إضافية للتوافق
+  String get name => displayName;
+  String? get avatar => photoURL;
 
   // تحويل من JSON إلى UserModel
   factory UserModel.fromJson(Map<String, dynamic> json) {
