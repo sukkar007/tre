@@ -2,8 +2,8 @@ plugins {
     id "com.android.application"
     id "kotlin-android"
     id "dev.flutter.flutter-gradle-plugin"
-    // id 'com.google.gms.google-services'
-    // id 'com.google.firebase.crashlytics'
+    id 'com.google.gms.google-services'
+    id 'com.google.firebase.crashlytics'
 }
 
 def localProperties = new Properties()
@@ -93,15 +93,15 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
     
     // Firebase
-    // Firebase dependencies - معطلة مؤقتاً للبناء التجريبي
-    // implementation platform('com.google.firebase:firebase-bom:32.7.0')
-    // implementation 'com.google.firebase:firebase-analytics'
-    // implementation 'com.google.firebase:firebase-auth'
-    // implementation 'com.google.firebase:firebase-firestore'
-    // implementation 'com.google.firebase:firebase-messaging'
-    // implementation 'com.google.firebase:firebase-crashlytics'
-    // implementation 'com.google.firebase:firebase-storage'
-    // implementation 'com.google.firebase:firebase-dynamic-links'
+    // Firebase dependencies
+    implementation platform('com.google.firebase:firebase-bom:32.7.0')
+    implementation 'com.google.firebase:firebase-analytics'
+    implementation 'com.google.firebase:firebase-auth'
+    implementation 'com.google.firebase:firebase-firestore'
+    implementation 'com.google.firebase:firebase-messaging'
+    implementation 'com.google.firebase:firebase-crashlytics'
+    implementation 'com.google.firebase:firebase-storage'
+    implementation 'com.google.firebase:firebase-dynamic-links'
     
     // Google Services
     implementation 'com.google.android.gms:play-services-auth:20.7.0'
