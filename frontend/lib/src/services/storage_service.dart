@@ -37,14 +37,14 @@ class StorageService {
     return await _storage.read(key: _userIdKey);
   }
 
-  // حفظ بيانات المستخدم (JSON string)
-  static Future<void> saveUserData(String userData) async {
-    await _storage.write(key: _userDataKey, value: userData);
-  }
-
   // حفظ بيانات المستخدم (UserModel object)
   static Future<void> saveUserData(UserModel user) async {
     await _storage.write(key: _userDataKey, value: user.toJsonString());
+  }
+
+  // حفظ بيانات المستخدم (JSON string)
+  static Future<void> saveUserDataString(String userData) async {
+    await _storage.write(key: _userDataKey, value: userData);
   }
 
   // استرجاع بيانات المستخدم (String)
