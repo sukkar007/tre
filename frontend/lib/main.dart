@@ -186,7 +186,6 @@ class HUSAppDemo extends StatelessWidget {
               borderRadius: BorderRadius.circular(12),
             ),
             behavior: SnackBarBehavior.floating,
-            margin: const EdgeInsets.all(16),
           ),
           
           dialogTheme: DialogTheme(
