@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+
 class AppConstants {
   // معلومات التطبيق
   static const String appName = 'HUS';

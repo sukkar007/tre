@@ -17,6 +17,9 @@ class UserModel {
     this.createdAt,
   });
 
+  // getter للـ id للتوافق مع الكود الموجود
+  String get id => userId;
+
   // تحويل من JSON إلى UserModel
   factory UserModel.fromJson(Map<String, dynamic> json) {
     return UserModel(
