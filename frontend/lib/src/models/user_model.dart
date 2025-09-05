@@ -6,6 +6,7 @@ class UserModel {
   final String? email;
   final String? photoURL;
   final bool isOnline;
+  final bool isVip;
   final DateTime? createdAt;
 
   UserModel({
@@ -14,6 +15,7 @@ class UserModel {
     this.email,
     this.photoURL,
     this.isOnline = false,
+    this.isVip = false,
     this.createdAt,
   });
 
@@ -32,6 +34,7 @@ class UserModel {
       email: json['email'],
       photoURL: json['photoURL'],
       isOnline: json['isOnline'] ?? false,
+      isVip: json['isVip'] ?? false,
       createdAt: json['createdAt'] != null 
           ? DateTime.parse(json['createdAt']) 
           : null,
@@ -46,6 +49,7 @@ class UserModel {
       'email': email,
       'photoURL': photoURL,
       'isOnline': isOnline,
+      'isVip': isVip,
       'createdAt': createdAt?.toIso8601String(),
     };
   }
@@ -68,6 +72,7 @@ class UserModel {
     String? email,
     String? photoURL,
     bool? isOnline,
+    bool? isVip,
     DateTime? createdAt,
   }) {
     return UserModel(
@@ -76,6 +81,7 @@ class UserModel {
       email: email ?? this.email,
       photoURL: photoURL ?? this.photoURL,
       isOnline: isOnline ?? this.isOnline,
+      isVip: isVip ?? this.isVip,
       createdAt: createdAt ?? this.createdAt,
     );
   }

@@ -1,180 +1,219 @@
 import 'dart:async';
-import 'dart:math';
 import '../models/room_model.dart';
 import '../models/user_model.dart';
 import '../models/room_message_model.dart';
-import 'mock_auth_service.dart';
 
-/// خدمة الغرف التجريبية - تعمل بدون خادم حقيقي
 class MockRoomService {
   static final MockRoomService _instance = MockRoomService._internal();
   factory MockRoomService() => _instance;
   MockRoomService._internal();
 
-  final MockAuthService _authService = MockAuthService();
   final Map<String, RoomModel> _rooms = {};
   final Map<String, List<RoomMessageModel>> _roomMessages = {};
-  final Map<String, List<UserModel>> _roomUsers = {};
-  
   final StreamController<List<RoomModel>> _roomsController = StreamController<List<RoomModel>>.broadcast();
-  final StreamController<RoomModel?> _currentRoomController = StreamController<RoomModel?>.broadcast();
   final StreamController<List<RoomMessageModel>> _messagesController = StreamController<List<RoomMessageModel>>.broadcast();
 
-  /// تيارات البيانات
   Stream<List<RoomModel>> get roomsStream => _roomsController.stream;
-  Stream<RoomModel?> get currentRoomStream => _currentRoomController.stream;
   Stream<List<RoomMessageModel>> get messagesStream => _messagesController.stream;
 
-  RoomModel? _currentRoom;
-  RoomModel? get currentRoom => _currentRoom;
+  // بيانات المستخدمين التجريبية
+  final List<UserModel> demoUsers = [
+    UserModel(
+      userId: 'user_001',
+      displayName: 'أحمد محمد',
+      email: 'ahmed@example.com',
+      photoURL: 'https://i.pravatar.cc/150?img=1',
+      isOnline: true,
+      isVip: true,
+      createdAt: DateTime.now().subtract(const Duration(days: 30)),
+    ),
+    UserModel(
+      userId: 'user_002',
+      displayName: 'فاطمة علي',
+      email: 'fatima@example.com',
+      photoURL: 'https://i.pravatar.cc/150?img=2',
+      isOnline: true,
+      isVip: false,
+      createdAt: DateTime.now().subtract(const Duration(days: 25)),
+    ),
+    UserModel(
+      userId: 'user_003',
+      displayName: 'محمد حسن',
+      email: 'mohammed@example.com',
+      photoURL: 'https://i.pravatar.cc/150?img=3',
+      isOnline: false,
+      isVip: true,
+      createdAt: DateTime.now().subtract(const Duration(days: 20)),
+    ),
+    UserModel(
+      userId: 'user_004',
+      displayName: 'نور الدين',
+      email: 'nour@example.com',
+      photoURL: 'https://i.pravatar.cc/150?img=4',
+      isOnline: true,
+      isVip: false,
+      createdAt: DateTime.now().subtract(const Duration(days: 15)),
+    ),
+    UserModel(
+      userId: 'user_005',
+      displayName: 'ليلى أحمد',
+      email: 'layla@example.com',
+      photoURL: 'https://i.pravatar.cc/150?img=5',
+      isOnline: true,
+      isVip: false,
+      createdAt: DateTime.now().subtract(const Duration(days: 10)),
+    ),
+  ];
 
-  /// تهيئة البيانات التجريبية
   void initializeDemoData() {
-    _createDemoRooms();
-    _createDemoMessages();
-    _roomsController.add(_rooms.values.toList());
+    _initializeRooms();
+    _initializeMessages();
   }
 
-  /// إنشاء غرف تجريبية
-  void _createDemoRooms() {
-    final demoUsers = _authService.getAllDemoUsers();
-    
+  void _initializeRooms() {
     // غرفة 1: غرفة عامة نشطة
     final room1 = RoomModel(
       id: 'room_001',
-      name: '🎵 صالون الموسيقى العربية',
+      roomId: 'room_001',
+      title: '🎵 صالون الموسيقى العربية',
       description: 'مناقشة وتشغيل أجمل الأغاني العربية الكلاسيكية والحديثة',
-      ownerId: demoUsers[0].id,
-      ownerName: demoUsers[0].name,
       category: 'موسيقى',
-      isPublic: true,
-      maxUsers: 50,
-      currentUsers: 23,
+      tags: ['موسيقى', 'عربي', 'كلاسيكي'],
+      owner: demoUsers[0],
       seats: _createDemoSeats(demoUsers.take(4).toList()),
+      micCount: 6,
       settings: RoomSettings(
-        chatEnabled: true,
-        micEnabled: true,
-        youtubeEnabled: true,
-        musicEnabled: true,
-        profanityFilter: true,
-        slowMode: false,
-        adminOnlyChat: false,
+        chatSettings: ChatSettings(
+          isEnabled: true,
+          profanityFilterEnabled: true,
+          slowModeEnabled: false,
+          slowModeInterval: 5,
+          adminOnlyMode: false,
+        ),
+        micSettings: MicSettings(
+          totalMics: 6,
+          vipMics: 1,
+          guestMics: 5,
+          autoMuteNewSpeakers: false,
+          requirePermissionToSpeak: false,
+        ),
+        mediaSettings: MediaSettings(
+          youtubeEnabled: true,
+          musicEnabled: true,
+          soundEffectsEnabled: true,
+          masterVolume: 1.0,
+          musicVolume: 0.7,
+          effectsVolume: 0.5,
+        ),
+        accessSettings: AccessSettings(
+          isPrivate: false,
+          requireApproval: false,
+          maxParticipants: 50,
+          allowedCountries: [],
+          minAge: 13,
+        ),
       ),
+      stats: RoomStats(
+        totalJoins: 150,
+        totalMessages: 1200,
+        peakParticipants: 45,
+        currentParticipants: 23,
+        totalDuration: const Duration(hours: 48),
+        categoryStats: {'موسيقى': 100, 'دردشة': 50},
+      ),
+      admins: [demoUsers[1]],
+      bannedUsers: [],
+      waitingQueue: [],
       createdAt: DateTime.now().subtract(const Duration(hours: 2)),
+      lastActiveAt: DateTime.now(),
+      status: 'active',
     );
 
     // غرفة 2: غرفة خاصة للأصدقاء
     final room2 = RoomModel(
-      id: 'room_002', 
-      name: '👥 جلسة الأصدقاء',
+      id: 'room_002',
+      roomId: 'room_002',
+      title: '👥 جلسة الأصدقاء',
       description: 'غرفة خاصة للدردشة مع الأصدقاء المقربين',
-      ownerId: demoUsers[1].id,
-      ownerName: demoUsers[1].name,
       category: 'اجتماعي',
-      isPublic: false,
-      maxUsers: 20,
-      currentUsers: 8,
+      tags: ['أصدقاء', 'دردشة', 'خاص'],
+      owner: demoUsers[1],
       seats: _createDemoSeats(demoUsers.skip(1).take(3).toList()),
+      micCount: 4,
       settings: RoomSettings(
-        chatEnabled: true,
-        micEnabled: true,
-        youtubeEnabled: false,
-        musicEnabled: true,
-        profanityFilter: true,
-        slowMode: true,
-        adminOnlyChat: false,
+        chatSettings: ChatSettings(
+          isEnabled: true,
+          profanityFilterEnabled: false,
+          slowModeEnabled: false,
+          slowModeInterval: 5,
+          adminOnlyMode: false,
+        ),
+        micSettings: MicSettings(
+          totalMics: 4,
+          vipMics: 0,
+          guestMics: 4,
+          autoMuteNewSpeakers: false,
+          requirePermissionToSpeak: false,
+        ),
+        mediaSettings: MediaSettings(
+          youtubeEnabled: false,
+          musicEnabled: false,
+          soundEffectsEnabled: true,
+          masterVolume: 1.0,
+          musicVolume: 0.7,
+          effectsVolume: 0.5,
+        ),
+        accessSettings: AccessSettings(
+          isPrivate: true,
+          requireApproval: true,
+          maxParticipants: 20,
+          allowedCountries: [],
+          minAge: 18,
+        ),
       ),
-      createdAt: DateTime.now().subtract(const Duration(minutes: 45)),
-    );
-
-    // غرفة 3: غرفة تعليمية
-    final room3 = RoomModel(
-      id: 'room_003',
-      name: '📚 دروس اللغة الإنجليزية',
-      description: 'تعلم اللغة الإنجليزية مع مدرسين متخصصين',
-      ownerId: demoUsers[3].id,
-      ownerName: demoUsers[3].name,
-      category: 'تعليم',
-      isPublic: true,
-      maxUsers: 30,
-      currentUsers: 15,
-      seats: _createDemoSeats([demoUsers[3], demoUsers[4]]),
-      settings: RoomSettings(
-        chatEnabled: true,
-        micEnabled: false,
-        youtubeEnabled: true,
-        musicEnabled: false,
-        profanityFilter: true,
-        slowMode: true,
-        adminOnlyChat: true,
+      stats: RoomStats(
+        totalJoins: 25,
+        totalMessages: 180,
+        peakParticipants: 12,
+        currentParticipants: 8,
+        totalDuration: const Duration(hours: 12),
+        categoryStats: {'دردشة': 25},
       ),
-      createdAt: DateTime.now().subtract(const Duration(hours: 1)),
-    );
-
-    // غرفة 4: غرفة ألعاب
-    final room4 = RoomModel(
-      id: 'room_004',
-      name: '🎮 نادي الألعاب',
-      description: 'مناقشة أحدث الألعاب والبطولات',
-      ownerId: demoUsers[2].id,
-      ownerName: demoUsers[2].name,
-      category: 'ألعاب',
-      isPublic: true,
-      maxUsers: 40,
-      currentUsers: 31,
-      seats: _createDemoSeats(demoUsers.take(5).toList()),
-      settings: RoomSettings(
-        chatEnabled: true,
-        micEnabled: true,
-        youtubeEnabled: true,
-        musicEnabled: true,
-        profanityFilter: false,
-        slowMode: false,
-        adminOnlyChat: false,
-      ),
-      createdAt: DateTime.now().subtract(const Duration(minutes: 20)),
+      admins: [],
+      bannedUsers: [],
+      waitingQueue: [],
+      createdAt: DateTime.now().subtract(const Duration(hours: 6)),
+      lastActiveAt: DateTime.now().subtract(const Duration(minutes: 5)),
+      status: 'active',
     );
 
     _rooms['room_001'] = room1;
     _rooms['room_002'] = room2;
-    _rooms['room_003'] = room3;
-    _rooms['room_004'] = room4;
 
-    // إضافة المستخدمين للغرف
-    _roomUsers['room_001'] = demoUsers.take(4).toList();
-    _roomUsers['room_002'] = demoUsers.skip(1).take(3).toList();
-    _roomUsers['room_003'] = [demoUsers[3], demoUsers[4]];
-    _roomUsers['room_004'] = demoUsers;
+    _roomsController.add(_rooms.values.toList());
   }
 
-  /// إنشاء مقاعد تجريبية
   List<MicSeat> _createDemoSeats(List<UserModel> users) {
     final seats = <MicSeat>[];
     
-    for (int i = 0; i < 8; i++) {
+    for (int i = 0; i < 6; i++) {
       if (i < users.length) {
         seats.add(MicSeat(
-          seatNumber: i,
-          id: 'seat_$i',
-          index: i,
+          seatNumber: i + 1,
           userId: users[i].id,
-          userName: users[i].name,
-          userAvatar: users[i].avatar,
-          isMuted: Random().nextBool(),
+          user: users[i],
           isVIP: users[i].isVip,
+          isMuted: false,
           isLocked: false,
-          joinedAt: DateTime.now().subtract(Duration(minutes: Random().nextInt(60))),
+          joinedAt: DateTime.now().subtract(Duration(minutes: 30 - (i * 5))),
         ));
       } else {
         seats.add(MicSeat(
-          seatNumber: i,
-          id: 'seat_$i',
-          index: i,
+          seatNumber: i + 1,
           userId: null,
-          userName: null,
-          userAvatar: null,
+          user: null,
+          isVIP: i == 0,
           isMuted: false,
-          isVIP: i >= 6, // المقاعد الأخيرة VIP
           isLocked: false,
           joinedAt: null,
         ));
@@ -184,9 +223,7 @@ class MockRoomService {
     return seats;
   }
 
-  /// إنشاء رسائل تجريبية
-  void _createDemoMessages() {
-    final demoUsers = _authService.getAllDemoUsers();
+  void _initializeMessages() {
     final messages = <String, List<RoomMessageModel>>{};
 
     // رسائل الغرفة الأولى
@@ -260,39 +297,27 @@ class MockRoomService {
     _roomMessages.addAll(messages);
   }
 
-  /// الحصول على قائمة الغرف
+  // الحصول على قائمة الغرف
   Future<List<RoomModel>> getRooms() async {
     await Future.delayed(const Duration(milliseconds: 500));
     return _rooms.values.toList();
   }
 
-  /// الانضمام لغرفة
-  Future<RoomModel?> joinRoom(String roomId) async {
-    await Future.delayed(const Duration(seconds: 1));
-    
-    final room = _rooms[roomId];
-    if (room == null) return null;
-
-    _currentRoom = room;
-    _currentRoomController.add(_currentRoom);
-    
-    // إرسال رسائل الغرفة
-    final messages = _roomMessages[roomId] ?? [];
-    _messagesController.add(messages);
-    
-    return room;
+  // الحصول على غرفة محددة
+  Future<RoomModel?> getRoom(String roomId) async {
+    await Future.delayed(const Duration(milliseconds: 300));
+    return _rooms[roomId];
   }
 
-  /// مغادرة الغرفة
-  Future<void> leaveRoom() async {
-    _currentRoom = null;
-    _currentRoomController.add(null);
-    _messagesController.add([]);
+  // الحصول على رسائل غرفة
+  Future<List<RoomMessageModel>> getRoomMessages(String roomId) async {
+    await Future.delayed(const Duration(milliseconds: 300));
+    return _roomMessages[roomId] ?? [];
   }
 
-  /// إرسال رسالة
+  // إرسال رسالة
   Future<void> sendMessage(String roomId, String message) async {
-    final currentUser = _authService.currentUser;
+    final currentUser = demoUsers[0]; // المستخدم الحالي
     if (currentUser == null) return;
 
     await Future.delayed(const Duration(milliseconds: 300));
@@ -316,125 +341,42 @@ class MockRoomService {
     _roomMessages[roomId] = _roomMessages[roomId] ?? [];
     _roomMessages[roomId]!.add(newMessage);
     
-    if (_currentRoom?.id == roomId) {
-      _messagesController.add(_roomMessages[roomId]!);
-    }
+    _messagesController.add(_roomMessages[roomId]!);
   }
 
-  /// طلب الانضمام لمقعد
-  Future<bool> requestSeat(String roomId, int seatIndex) async {
+  // الانضمام إلى غرفة
+  Future<bool> joinRoom(String roomId) async {
     await Future.delayed(const Duration(milliseconds: 500));
-    
     final room = _rooms[roomId];
-    final currentUser = _authService.currentUser;
-    if (room == null || currentUser == null) return false;
+    if (room == null) return false;
 
-    // التحقق من توفر المقعد
-    if (seatIndex >= room.seats.length) return false;
-    if (room.seats[seatIndex].userId != null) return false;
-
-    // إضافة المستخدم للمقعد
-    room.seats[seatIndex] = room.seats[seatIndex].copyWith(
-      userId: currentUser.id,
-      userName: currentUser.name,
-      userAvatar: currentUser.avatar,
-      joinedAt: DateTime.now(),
-    );
-
-    _rooms[roomId] = room;
-    if (_currentRoom?.id == roomId) {
-      _currentRoom = room;
-      _currentRoomController.add(_currentRoom);
-    }
-
+    // محاكاة نجاح الانضمام
     return true;
   }
 
-  /// مغادرة المقعد
-  Future<bool> leaveSeat(String roomId, int seatIndex) async {
+  // مغادرة غرفة
+  Future<void> leaveRoom(String roomId) async {
     await Future.delayed(const Duration(milliseconds: 300));
+    // محاكاة مغادرة الغرفة
+  }
+
+  // البحث في الغرف
+  Future<List<RoomModel>> searchRooms(String query) async {
+    await Future.delayed(const Duration(milliseconds: 400));
     
-    final room = _rooms[roomId];
-    if (room == null) return false;
-
-    if (seatIndex >= room.seats.length) return false;
-
-    // إزالة المستخدم من المقعد
-    room.seats[seatIndex] = room.seats[seatIndex].copyWith(
-      userId: null,
-      userName: null,
-      userAvatar: null,
-      joinedAt: null,
-      isMuted: false,
-    );
-
-    _rooms[roomId] = room;
-    if (_currentRoom?.id == roomId) {
-      _currentRoom = room;
-      _currentRoomController.add(_currentRoom);
-    }
-
-    return true;
-  }
-
-  /// كتم/إلغاء كتم مستخدم
-  Future<bool> toggleMute(String roomId, int seatIndex) async {
-    await Future.delayed(const Duration(milliseconds: 200));
+    if (query.isEmpty) return _rooms.values.toList();
     
-    final room = _rooms[roomId];
-    if (room == null) return false;
-
-    if (seatIndex >= room.seats.length) return false;
-    if (room.seats[seatIndex].userId == null) return false;
-
-    room.seats[seatIndex] = room.seats[seatIndex].copyWith(
-      isMuted: !room.seats[seatIndex].isMuted,
-    );
-
-    _rooms[roomId] = room;
-    if (_currentRoom?.id == roomId) {
-      _currentRoom = room;
-      _currentRoomController.add(_currentRoom);
-    }
-
-    return true;
+    return _rooms.values.where((room) {
+      return room.title.toLowerCase().contains(query.toLowerCase()) ||
+             room.description?.toLowerCase().contains(query.toLowerCase()) == true ||
+             room.category.toLowerCase().contains(query.toLowerCase());
+    }).toList();
   }
 
-  /// الحصول على مستخدمي الغرفة
-  List<UserModel> getRoomUsers(String roomId) {
-    return _roomUsers[roomId] ?? [];
-  }
-
-  /// تنظيف الموارد
+  // تنظيف الموارد
   void dispose() {
     _roomsController.close();
-    _currentRoomController.close();
     _messagesController.close();
-  }
-}
-
-/// إضافة copyWith للـ MicSeat
-extension MicSeatCopyWith on MicSeat {
-  MicSeat copyWith({
-    int? seatNumber,
-    String? userId,
-    String? userName,
-    String? userAvatar,
-    bool? isMuted,
-    bool? isVIP,
-    bool? isLocked,
-    DateTime? joinedAt,
-  }) {
-    return MicSeat(
-      seatNumber: seatNumber ?? this.seatNumber,
-      userId: userId,
-      userName: userName,
-      userAvatar: userAvatar,
-      isMuted: isMuted ?? this.isMuted,
-      isVIP: isVIP ?? this.isVIP,
-      isLocked: isLocked ?? this.isLocked,
-      joinedAt: joinedAt,
-    );
   }
 }
 
