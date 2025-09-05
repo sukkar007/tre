@@ -154,6 +154,7 @@ class MockRoomService {
     for (int i = 0; i < 8; i++) {
       if (i < users.length) {
         seats.add(MicSeat(
+          seatNumber: i,
           id: 'seat_$i',
           index: i,
           userId: users[i].id,
@@ -165,6 +166,7 @@ class MockRoomService {
         ));
       } else {
         seats.add(MicSeat(
+          seatNumber: i,
           id: 'seat_$i',
           index: i,
           userId: null,
@@ -193,7 +195,7 @@ class MockRoomService {
         userId: demoUsers[0].id,
         userName: demoUsers[0].name,
         userAvatar: demoUsers[0].avatar,
-        message: 'أهلاً وسهلاً بكم في صالون الموسيقى! 🎵',
+        content: 'أهلاً وسهلاً بكم في صالون الموسيقى! 🎵',
         timestamp: DateTime.now().subtract(const Duration(minutes: 30)),
         type: MessageType.text,
       ),
@@ -203,7 +205,7 @@ class MockRoomService {
         userId: demoUsers[1].id,
         userName: demoUsers[1].name,
         userAvatar: demoUsers[1].avatar,
-        message: 'شكراً لك، الغرفة رائعة! 👏',
+        content: 'شكراً لك، الغرفة رائعة! 👏',
         timestamp: DateTime.now().subtract(const Duration(minutes: 28)),
         type: MessageType.text,
       ),
@@ -213,7 +215,7 @@ class MockRoomService {
         userId: demoUsers[2].id,
         userName: demoUsers[2].name,
         userAvatar: demoUsers[2].avatar,
-        message: 'هل يمكن تشغيل أغنية فيروز؟ 🎶',
+        content: 'هل يمكن تشغيل أغنية فيروز؟ 🎶',
         timestamp: DateTime.now().subtract(const Duration(minutes: 25)),
         type: MessageType.text,
       ),
@@ -227,7 +229,7 @@ class MockRoomService {
         userId: demoUsers[1].id,
         userName: demoUsers[1].name,
         userAvatar: demoUsers[1].avatar,
-        message: 'كيف حالكم يا أصدقاء؟ 😊',
+        content: 'كيف حالكم يا أصدقاء؟ 😊',
         timestamp: DateTime.now().subtract(const Duration(minutes: 15)),
         type: MessageType.text,
       ),
@@ -279,7 +281,7 @@ class MockRoomService {
       userId: currentUser.id,
       userName: currentUser.name,
       userAvatar: currentUser.avatar,
-      message: message,
+      content: message,
       timestamp: DateTime.now(),
       type: MessageType.text,
     );
@@ -387,6 +389,7 @@ class MockRoomService {
 /// إضافة copyWith للـ MicSeat
 extension MicSeatCopyWith on MicSeat {
   MicSeat copyWith({
+    int? seatNumber,
     String? id,
     int? index,
     String? userId,
@@ -397,6 +400,7 @@ extension MicSeatCopyWith on MicSeat {
     DateTime? joinedAt,
   }) {
     return MicSeat(
+      seatNumber: seatNumber ?? this.seatNumber,
       id: id ?? this.id,
       index: index ?? this.index,
       userId: userId,
