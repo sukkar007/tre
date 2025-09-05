@@ -372,7 +372,7 @@ class _WaitingQueueWidgetState extends State<WaitingQueueWidget>
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  queueItem.userName,
+                  queueItem.user.name,
                   style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w600,

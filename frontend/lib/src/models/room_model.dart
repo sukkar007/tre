@@ -166,6 +166,8 @@ class MicSeat {
     this.joinedAt,
     String? id, // معامل إضافي للتوافق
     int? index, // معامل إضافي للتوافق
+    String? userName, // معامل إضافي للتوافق
+    String? userAvatar, // معامل إضافي للتوافق
   });
 
   factory MicSeat.fromJson(Map<String, dynamic> json) {
