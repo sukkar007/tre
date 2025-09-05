@@ -199,7 +199,6 @@ class MockRoomService {
         userAvatar: demoUsers[0].avatar,
         content: 'أهلاً وسهلاً بكم في صالون الموسيقى! 🎵',
         createdAt: DateTime.now().subtract(const Duration(minutes: 30)),
-        type: MessageType.text,
       ),
       RoomMessageModel(
         id: 'msg_002',
@@ -209,7 +208,6 @@ class MockRoomService {
         userAvatar: demoUsers[1].avatar,
         content: 'شكراً لك، الغرفة رائعة! 👏',
         createdAt: DateTime.now().subtract(const Duration(minutes: 28)),
-        type: MessageType.text,
       ),
       RoomMessageModel(
         id: 'msg_003',
@@ -219,7 +217,6 @@ class MockRoomService {
         userAvatar: demoUsers[2].avatar,
         content: 'هل يمكن تشغيل أغنية فيروز؟ 🎶',
         createdAt: DateTime.now().subtract(const Duration(minutes: 25)),
-        type: MessageType.text,
       ),
     ];
 
@@ -233,7 +230,6 @@ class MockRoomService {
         userAvatar: demoUsers[1].avatar,
         content: 'كيف حالكم يا أصدقاء؟ 😊',
         createdAt: DateTime.now().subtract(const Duration(minutes: 15)),
-        type: MessageType.text,
       ),
     ];
 
@@ -285,7 +281,6 @@ class MockRoomService {
       userAvatar: currentUser.avatar,
       content: message,
       createdAt: DateTime.now(),
-      type: MessageType.text,
     );
 
     _roomMessages[roomId] = _roomMessages[roomId] ?? [];
@@ -392,8 +387,6 @@ class MockRoomService {
 extension MicSeatCopyWith on MicSeat {
   MicSeat copyWith({
     int? seatNumber,
-    String? id,
-    int? index,
     String? userId,
     String? userName,
     String? userAvatar,
@@ -404,8 +397,6 @@ extension MicSeatCopyWith on MicSeat {
   }) {
     return MicSeat(
       seatNumber: seatNumber ?? this.seatNumber,
-      id: id ?? this.id,
-      index: index ?? this.index,
       userId: userId,
       userName: userName,
       userAvatar: userAvatar,
