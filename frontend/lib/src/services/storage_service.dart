@@ -43,7 +43,7 @@ class StorageService {
   }
 
   // حفظ بيانات المستخدم (JSON string)
-  static Future<void> saveUserDataString(String userData) async {
+  static Future<void> saveUserDataAsString(String userData) async {
     await _storage.write(key: _userDataKey, value: userData);
   }
 
