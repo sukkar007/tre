@@ -165,6 +165,7 @@ class MicSeat {
     required this.isLocked,
     this.joinedAt,
     String? id, // معامل إضافي للتوافق
+    int? index, // معامل إضافي للتوافق
   });
 
   factory MicSeat.fromJson(Map<String, dynamic> json) {

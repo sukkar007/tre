@@ -20,6 +20,7 @@ class RoomMessageModel {
     required this.senderId,
     String? userId, // معامل إضافي للتوافق
     required this.senderName,
+    String? userName, // معامل إضافي للتوافق
     this.senderProfilePicture,
     required this.senderRole,
     required this.content,
