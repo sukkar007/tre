@@ -162,6 +162,7 @@ class MockRoomService {
           userAvatar: users[i].avatar,
           isMuted: Random().nextBool(),
           isVIP: users[i].isVip,
+          isLocked: false,
           joinedAt: DateTime.now().subtract(Duration(minutes: Random().nextInt(60))),
         ));
       } else {
@@ -174,6 +175,7 @@ class MockRoomService {
           userAvatar: null,
           isMuted: false,
           isVIP: i >= 6, // المقاعد الأخيرة VIP
+          isLocked: false,
           joinedAt: null,
         ));
       }
@@ -196,7 +198,7 @@ class MockRoomService {
         userName: demoUsers[0].name,
         userAvatar: demoUsers[0].avatar,
         content: 'أهلاً وسهلاً بكم في صالون الموسيقى! 🎵',
-        timestamp: DateTime.now().subtract(const Duration(minutes: 30)),
+        createdAt: DateTime.now().subtract(const Duration(minutes: 30)),
         type: MessageType.text,
       ),
       RoomMessageModel(
@@ -206,7 +208,7 @@ class MockRoomService {
         userName: demoUsers[1].name,
         userAvatar: demoUsers[1].avatar,
         content: 'شكراً لك، الغرفة رائعة! 👏',
-        timestamp: DateTime.now().subtract(const Duration(minutes: 28)),
+        createdAt: DateTime.now().subtract(const Duration(minutes: 28)),
         type: MessageType.text,
       ),
       RoomMessageModel(
@@ -216,7 +218,7 @@ class MockRoomService {
         userName: demoUsers[2].name,
         userAvatar: demoUsers[2].avatar,
         content: 'هل يمكن تشغيل أغنية فيروز؟ 🎶',
-        timestamp: DateTime.now().subtract(const Duration(minutes: 25)),
+        createdAt: DateTime.now().subtract(const Duration(minutes: 25)),
         type: MessageType.text,
       ),
     ];
@@ -230,7 +232,7 @@ class MockRoomService {
         userName: demoUsers[1].name,
         userAvatar: demoUsers[1].avatar,
         content: 'كيف حالكم يا أصدقاء؟ 😊',
-        timestamp: DateTime.now().subtract(const Duration(minutes: 15)),
+        createdAt: DateTime.now().subtract(const Duration(minutes: 15)),
         type: MessageType.text,
       ),
     ];
@@ -282,7 +284,7 @@ class MockRoomService {
       userName: currentUser.name,
       userAvatar: currentUser.avatar,
       content: message,
-      timestamp: DateTime.now(),
+      createdAt: DateTime.now(),
       type: MessageType.text,
     );
 
@@ -397,6 +399,7 @@ extension MicSeatCopyWith on MicSeat {
     String? userAvatar,
     bool? isMuted,
     bool? isVIP,
+    bool? isLocked,
     DateTime? joinedAt,
   }) {
     return MicSeat(
@@ -408,6 +411,7 @@ extension MicSeatCopyWith on MicSeat {
       userAvatar: userAvatar,
       isMuted: isMuted ?? this.isMuted,
       isVIP: isVIP ?? this.isVIP,
+      isLocked: isLocked ?? this.isLocked,
       joinedAt: joinedAt,
     );
   }
