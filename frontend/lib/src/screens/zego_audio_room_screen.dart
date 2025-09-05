@@ -168,12 +168,12 @@ class _ZegoAudioRoomScreenState extends State<ZegoAudioRoomScreen>
       setState(() {
         // تحويل ZegoUIKitUser إلى UserModel
         connectedUsers = zegoUsers.map((zegoUser) => UserModel(
-          id: zegoUser.id,
+          userId: zegoUser.id,
           displayName: zegoUser.name,
           email: '', // سيتم تحديثه من الخادم
-          profilePictureUrl: '', // سيتم تحديثه من الخادم
-          phoneNumber: '',
-          deviceInfo: {},
+          photoURL: '', // سيتم تحديثه من الخادم
+          isOnline: true,
+          isVip: false,
           createdAt: DateTime.now(),
         )).toList();
       });

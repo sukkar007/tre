@@ -9,7 +9,6 @@ class MockAuthService {
   factory MockAuthService() => _instance;
   MockAuthService._internal();
 
-  final StorageService _storageService = StorageService();
   UserModel? _currentUser;
   final StreamController<UserModel?> _authStateController = StreamController<UserModel?>.broadcast();
 
@@ -22,49 +21,49 @@ class MockAuthService {
   /// قائمة المستخدمين التجريبيين
   final List<Map<String, dynamic>> _demoUsers = [
     {
-      'id': 'user_001',
-      'name': 'أحمد محمد',
+      'userId': 'user_001',
+      'displayName': 'أحمد محمد',
       'email': 'ahmed@demo.com',
-      'avatar': 'https://via.placeholder.com/150/FF6B6B/FFFFFF?text=أحمد',
-      'level': 15,
-      'points': 2500,
+      'photoURL': 'https://via.placeholder.com/150/FF6B6B/FFFFFF?text=أحمد',
+      'isOnline': true,
       'isVip': true,
+      'createdAt': DateTime.now().subtract(const Duration(days: 30)).toIso8601String(),
     },
     {
-      'id': 'user_002', 
-      'name': 'فاطمة علي',
+      'userId': 'user_002', 
+      'displayName': 'فاطمة علي',
       'email': 'fatima@demo.com',
-      'avatar': 'https://via.placeholder.com/150/4ECDC4/FFFFFF?text=فاطمة',
-      'level': 12,
-      'points': 1800,
+      'photoURL': 'https://via.placeholder.com/150/4ECDC4/FFFFFF?text=فاطمة',
+      'isOnline': true,
       'isVip': false,
+      'createdAt': DateTime.now().subtract(const Duration(days: 25)).toIso8601String(),
     },
     {
-      'id': 'user_003',
-      'name': 'محمد حسن',
+      'userId': 'user_003',
+      'displayName': 'محمد حسن',
       'email': 'mohammed@demo.com', 
-      'avatar': 'https://via.placeholder.com/150/45B7D1/FFFFFF?text=محمد',
-      'level': 8,
-      'points': 950,
+      'photoURL': 'https://via.placeholder.com/150/45B7D1/FFFFFF?text=محمد',
+      'isOnline': false,
       'isVip': false,
+      'createdAt': DateTime.now().subtract(const Duration(days: 20)).toIso8601String(),
     },
     {
-      'id': 'user_004',
-      'name': 'نور الدين',
+      'userId': 'user_004',
+      'displayName': 'نور الدين',
       'email': 'nour@demo.com',
-      'avatar': 'https://via.placeholder.com/150/F7DC6F/FFFFFF?text=نور',
-      'level': 20,
-      'points': 4200,
+      'photoURL': 'https://via.placeholder.com/150/F7DC6F/FFFFFF?text=نور',
+      'isOnline': true,
       'isVip': true,
+      'createdAt': DateTime.now().subtract(const Duration(days: 15)).toIso8601String(),
     },
     {
-      'id': 'user_005',
-      'name': 'سارة أحمد',
+      'userId': 'user_005',
+      'displayName': 'سارة أحمد',
       'email': 'sara@demo.com',
-      'avatar': 'https://via.placeholder.com/150/BB8FCE/FFFFFF?text=سارة',
-      'level': 6,
-      'points': 720,
+      'photoURL': 'https://via.placeholder.com/150/BB8FCE/FFFFFF?text=سارة',
+      'isOnline': true,
       'isVip': false,
+      'createdAt': DateTime.now().subtract(const Duration(days: 10)).toIso8601String(),
     },
   ];
 
@@ -76,13 +75,13 @@ class MockAuthService {
 
       // اختيار مستخدم عشوائي أو محدد
       final userData = userId != null 
-          ? _demoUsers.firstWhere((user) => user['id'] == userId, orElse: () => _demoUsers.first)
+          ? _demoUsers.firstWhere((user) => user['userId'] == userId, orElse: () => _demoUsers.first)
           : _demoUsers[Random().nextInt(_demoUsers.length)];
 
       _currentUser = UserModel.fromJson(userData);
       
       // حفظ بيانات المستخدم محلياً
-      await _storageService.saveUserData(_currentUser!);
+      await StorageService.saveUserData(_currentUser!);
       
       // إشعار المستمعين
       _authStateController.add(_currentUser);
@@ -103,18 +102,17 @@ class MockAuthService {
   Future<UserModel?> signInWithPhone(String phoneNumber) async {
     // إنشاء مستخدم جديد بناءً على رقم الهاتف
     final newUser = {
-      'id': 'phone_${phoneNumber.replaceAll('+', '').replaceAll(' ', '')}',
-      'name': 'مستخدم ${phoneNumber.substring(phoneNumber.length - 4)}',
+      'userId': 'phone_${phoneNumber.replaceAll('+', '').replaceAll(' ', '')}',
+      'displayName': 'مستخدم ${phoneNumber.substring(phoneNumber.length - 4)}',
       'email': 'user_${phoneNumber.substring(phoneNumber.length - 4)}@demo.com',
-      'avatar': 'https://via.placeholder.com/150/85C1E9/FFFFFF?text=${phoneNumber.substring(phoneNumber.length - 2)}',
-      'level': 1,
-      'points': 0,
+      'photoURL': 'https://via.placeholder.com/150/85C1E9/FFFFFF?text=${phoneNumber.substring(phoneNumber.length - 2)}',
+      'isOnline': true,
       'isVip': false,
-      'phoneNumber': phoneNumber,
+      'createdAt': DateTime.now().toIso8601String(),
     };
 
     _currentUser = UserModel.fromJson(newUser);
-    await _storageService.saveUserData(_currentUser!);
+    await StorageService.saveUserData(_currentUser!);
     _authStateController.add(_currentUser);
     
     return _currentUser;
@@ -123,7 +121,7 @@ class MockAuthService {
   /// استعادة جلسة المستخدم
   Future<UserModel?> restoreSession() async {
     try {
-      final userData = await _storageService.getUserData();
+      final userData = await StorageService.getUserDataAsModel();
       if (userData != null) {
         _currentUser = userData;
         _authStateController.add(_currentUser);
@@ -138,14 +136,15 @@ class MockAuthService {
   /// تسجيل الخروج
   Future<void> signOut() async {
     _currentUser = null;
-    await _storageService.clearUserData();
+    await StorageService.clearUserData();
     _authStateController.add(null);
   }
 
   /// تحديث بيانات المستخدم
   Future<UserModel?> updateUserProfile({
-    String? name,
-    String? avatar,
+    String? displayName,
+    String? photoURL,
+    bool? isVip,
   }) async {
     if (_currentUser == null) return null;
 
@@ -154,11 +153,12 @@ class MockAuthService {
       await Future.delayed(const Duration(milliseconds: 500));
 
       _currentUser = _currentUser!.copyWith(
-        name: name ?? _currentUser!.name,
-        avatar: avatar ?? _currentUser!.avatar,
+        displayName: displayName ?? _currentUser!.displayName,
+        photoURL: photoURL ?? _currentUser!.photoURL,
+        isVip: isVip ?? _currentUser!.isVip,
       );
 
-      await _storageService.saveUserData(_currentUser!);
+      await StorageService.saveUserData(_currentUser!);
       _authStateController.add(_currentUser);
       
       return _currentUser;
@@ -171,7 +171,7 @@ class MockAuthService {
   /// الحصول على مستخدم تجريبي بالمعرف
   UserModel? getDemoUser(String userId) {
     try {
-      final userData = _demoUsers.firstWhere((user) => user['id'] == userId);
+      final userData = _demoUsers.firstWhere((user) => user['userId'] == userId);
       return UserModel.fromJson(userData);
     } catch (e) {
       return null;
@@ -203,31 +203,6 @@ class MockAuthService {
   /// تنظيف الموارد
   void dispose() {
     _authStateController.close();
-  }
-}
-
-/// إضافة copyWith للـ UserModel
-extension UserModelCopyWith on UserModel {
-  UserModel copyWith({
-    String? id,
-    String? name,
-    String? email,
-    String? avatar,
-    int? level,
-    int? points,
-    bool? isVip,
-    String? phoneNumber,
-  }) {
-    return UserModel(
-      id: id ?? this.id,
-      name: name ?? this.name,
-      email: email ?? this.email,
-      avatar: avatar ?? this.avatar,
-      level: level ?? this.level,
-      points: points ?? this.points,
-      isVip: isVip ?? this.isVip,
-      phoneNumber: phoneNumber ?? this.phoneNumber,
-    );
   }
 }
 

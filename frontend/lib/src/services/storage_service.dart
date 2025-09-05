@@ -1,4 +1,5 @@
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import '../models/user_model.dart';
 
 class StorageService {
   static const _storage = FlutterSecureStorage(
@@ -41,9 +42,34 @@ class StorageService {
     await _storage.write(key: _userDataKey, value: userData);
   }
 
-  // استرجاع بيانات المستخدم
+  // حفظ بيانات المستخدم (UserModel object)
+  static Future<void> saveUserData(UserModel user) async {
+    await _storage.write(key: _userDataKey, value: user.toJsonString());
+  }
+
+  // استرجاع بيانات المستخدم (String)
   static Future<String?> getUserData() async {
     return await _storage.read(key: _userDataKey);
+  }
+
+  // استرجاع بيانات المستخدم (UserModel object)
+  static Future<UserModel?> getUserDataAsModel() async {
+    final userData = await _storage.read(key: _userDataKey);
+    if (userData != null) {
+      try {
+        return UserModel.fromJsonString(userData);
+      } catch (e) {
+        print('خطأ في تحويل بيانات المستخدم: $e');
+        return null;
+      }
+    }
+    return null;
+  }
+
+  // مسح بيانات المستخدم
+  static Future<void> clearUserData() async {
+    await _storage.delete(key: _userDataKey);
+    await _storage.delete(key: _userIdKey);
   }
 
   // حفظ معرّف الجهاز

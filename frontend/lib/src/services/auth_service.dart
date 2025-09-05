@@ -59,9 +59,9 @@ class AuthService extends ChangeNotifier {
   // تحميل بيانات المستخدم من التخزين المحلي
   Future<void> _loadUserFromStorage() async {
     try {
-      final userDataString = await StorageService.getUserData();
-      if (userDataString != null) {
-        _currentUser = UserModel.fromJsonString(userDataString);
+      final userData = await StorageService.getUserDataAsModel();
+      if (userData != null) {
+        _currentUser = userData;
         notifyListeners();
       }
     } catch (e) {
@@ -160,7 +160,7 @@ class AuthService extends ChangeNotifier {
       
       await StorageService.saveToken(appToken);
       await StorageService.saveUserId(_currentUser!.userId);
-      await StorageService.saveUserData(_currentUser!.toJsonString());
+      await StorageService.saveUserData(_currentUser!);
 
       notifyListeners();
       return true;
@@ -194,9 +194,29 @@ class AuthService extends ChangeNotifier {
   }
 
   // تحديث بيانات المستخدم
+  Future<void> updateUserProfile({
+    String? displayName,
+    String? email,
+    String? photoURL,
+    bool? isVip,
+  }) async {
+    if (_currentUser == null) return;
+
+    _currentUser = _currentUser!.copyWith(
+      displayName: displayName ?? _currentUser!.displayName,
+      email: email ?? _currentUser!.email,
+      photoURL: photoURL ?? _currentUser!.photoURL,
+      isVip: isVip ?? _currentUser!.isVip,
+    );
+
+    await StorageService.saveUserData(_currentUser!);
+    notifyListeners();
+  }
+
+  // تحديث بيانات المستخدم
   Future<void> updateUserData(UserModel updatedUser) async {
     _currentUser = updatedUser;
-    await StorageService.saveUserData(updatedUser.toJsonString());
+    await StorageService.saveUserData(updatedUser);
     notifyListeners();
   }
 

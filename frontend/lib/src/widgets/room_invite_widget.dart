@@ -73,22 +73,28 @@ class _RoomInviteWidgetState extends State<RoomInviteWidget>
         friends = [
           // بيانات تجريبية
           UserModel(
-            id: '1',
-            email: 'friend1@example.com',
+            userId: '1',
             displayName: 'أحمد محمد',
-            profilePicture: null,
+            email: 'friend1@example.com',
+            photoURL: null,
+            isOnline: true,
+            isVip: false,
           ),
           UserModel(
-            id: '2',
-            email: 'friend2@example.com',
+            userId: '2',
             displayName: 'فاطمة علي',
-            profilePicture: null,
+            email: 'friend2@example.com',
+            photoURL: null,
+            isOnline: true,
+            isVip: false,
           ),
           UserModel(
-            id: '3',
-            email: 'friend3@example.com',
+            userId: '3',
             displayName: 'محمد أحمد',
-            profilePicture: null,
+            email: 'friend3@example.com',
+            photoURL: null,
+            isOnline: false,
+            isVip: false,
           ),
         ];
       });
