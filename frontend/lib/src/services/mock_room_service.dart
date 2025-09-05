@@ -194,6 +194,7 @@ class MockRoomService {
       RoomMessageModel(
         id: 'msg_001',
         roomId: 'room_001',
+        senderId: demoUsers[0].id,
         userId: demoUsers[0].id,
         userName: demoUsers[0].name,
         userAvatar: demoUsers[0].avatar,
@@ -203,6 +204,7 @@ class MockRoomService {
       RoomMessageModel(
         id: 'msg_002',
         roomId: 'room_001',
+        senderId: demoUsers[1].id,
         userId: demoUsers[1].id,
         userName: demoUsers[1].name,
         userAvatar: demoUsers[1].avatar,
@@ -212,6 +214,7 @@ class MockRoomService {
       RoomMessageModel(
         id: 'msg_003',
         roomId: 'room_001',
+        senderId: demoUsers[2].id,
         userId: demoUsers[2].id,
         userName: demoUsers[2].name,
         userAvatar: demoUsers[2].avatar,
@@ -225,6 +228,7 @@ class MockRoomService {
       RoomMessageModel(
         id: 'msg_004',
         roomId: 'room_002',
+        senderId: demoUsers[1].id,
         userId: demoUsers[1].id,
         userName: demoUsers[1].name,
         userAvatar: demoUsers[1].avatar,
@@ -276,6 +280,7 @@ class MockRoomService {
     final newMessage = RoomMessageModel(
       id: 'msg_${DateTime.now().millisecondsSinceEpoch}',
       roomId: roomId,
+      senderId: currentUser.id,
       userId: currentUser.id,
       userName: currentUser.name,
       userAvatar: currentUser.avatar,
