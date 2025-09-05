@@ -11,6 +11,10 @@ class MediaContent {
   final YouTubeData? youtubeData;
   final AudioData? audioData;
   final PlaylistData? playlistData;
+  
+  // خاصيات إضافية للتوافق
+  String get id => contentId;
+  double? get duration => 180.0; // قيمة افتراضية 3 دقائق
 
   MediaContent({
     required this.contentId,

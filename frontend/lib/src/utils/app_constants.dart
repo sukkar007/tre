@@ -156,7 +156,6 @@ class AppConstants {
   static const Duration loginCooldown = Duration(minutes: 15);
   
   // ألوان المايكات والأدوار
-  static const int primaryColorValue = 0xFF6366f1;
   static const int emptySeatColorValue = 0xFFE0E0E0;
   static const int occupiedSeatColorValue = 0xFF6366f1;
   static const int currentUserSeatColorValue = 0xFF10b981;
